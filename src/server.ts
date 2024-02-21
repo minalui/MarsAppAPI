@@ -1,24 +1,32 @@
 import express = require('express');
-const axios = require('axios').default;
+import { RequestHelper } from "./requests";
+// import express from 'express'
 
 const app = express();
 const port = 8000;
-
-const apikey = "cwS3LbOcP8yskjoV7O8oSHWeoaw70O1Jvxa3hk9z";
-
-let nasaResponse: any;
-
-axios.get('https://api.nasa.gov/mars-photos/api/v1/rovers?api_key=' + apikey)
-    .then(function (response: any) {
-        console.log(response);
-        nasaResponse = response.data;
-    })
-
+const requestHelper = new RequestHelper();
 
 app.use(express.json());
 const router = express.Router();
 router.get('/test', (req:any, res:any) => res.send('Hello world !'));
-router.get('/rovers', (req:any, res:any) => res.send(nasaResponse));
+router.get('/rovers', async (req:any, res:any) => {
+    const roversList = await requestHelper.getRovers();
+
+    res.send(roversList);
+});
+
+router.get('/rovers/photos', async (req:any, res:any) => {
+    const roverPhotoList = await requestHelper.getRoverPhotos();
+    let roverPhotoImages: string [] = [];
+    roverPhotoList.photos.map((photo) => {
+        roverPhotoImages.push(photo.img_src);
+    })
+    console.log(roverPhotoImages);
+    roverPhotoImages.forEach((photo) => {
+
+    })
+    res.send(roverPhotoImages);
+})
 app.use('/', router);
 
 app.listen(port, () => {
