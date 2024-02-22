@@ -20,22 +20,24 @@ router.get('/rovers/:roverName/photos/:cameraType', async (req:any, res:any) => 
     let roverPhotoList;
     try {
         roverPhotoList = await requestHelper.getRoverPhotos(req.params.roverName, req.params.cameraType);
+        console.log(roverPhotoList);
     } catch (error) {
         console.log(error);
         res.sendStatus(400);
-    } finally {
-        if (roverPhotoList != null) {
-            let roverPhotoImages: string [] = [];
-            roverPhotoList.photos.map((photo) => {
-                roverPhotoImages.push(photo.img_src);
-            })
-            console.log(roverPhotoImages);
-            roverPhotoImages.forEach((photo) => {
+    }
 
-            })
+    if (roverPhotoList != null) {
+        let roverPhotoImages: string [] = [];
+        roverPhotoList.photos.map((photo) => {
+            roverPhotoImages.push(photo.img_src);
+        })
+        if(roverPhotoImages.length != 0) {
             res.send(roverPhotoImages);
+        } else {
+            res.send("No images found");
         }
     }
+
 })
 app.use('/', router);
 

@@ -38,17 +38,7 @@ interface RoverPhoto {
     rover: Rover,
 }
 
-enum cameraTypes {
-    FHAZ,
-    RHAZ,
-    MAST,
-    CHEMCAM,
-    MAHLI,
-    MARDI,
-    NAVCAM,
-    PANCAM,
-    MINITES
-}
+type cameraTypes = 'FHAZ' | 'RHAZ' | 'MAST' | 'CHEMCAM' | 'MAHLI' | 'MARDI' | 'NAVCAM' | 'PANCAM' | 'MINITES';
 
 export class RequestHelper {
     // private api
