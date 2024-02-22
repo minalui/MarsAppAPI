@@ -23,7 +23,6 @@ router.get('/rovers/:roverName/photos/:cameraType', async (req:any, res:any) => 
         console.log(roverPhotoList);
     } catch (error) {
         console.log(error);
-        res.sendStatus(400);
     }
 
     if (roverPhotoList != null) {
@@ -36,6 +35,8 @@ router.get('/rovers/:roverName/photos/:cameraType', async (req:any, res:any) => 
         } else {
             res.send("No images found");
         }
+    } else {
+        res.send('Error, please try again');
     }
 
 })
