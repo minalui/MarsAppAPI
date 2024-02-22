@@ -38,6 +38,8 @@ interface RoverPhoto {
     rover: Rover,
 }
 
+type cameraTypes = 'FHAZ' | 'RHAZ' | 'MAST' | 'CHEMCAM' | 'MAHLI' | 'MARDI' | 'NAVCAM' | 'PANCAM' | 'MINITES';
+
 export class RequestHelper {
     // private api
     private apiKey = "cwS3LbOcP8yskjoV7O8oSHWeoaw70O1Jvxa3hk9z";
@@ -51,12 +53,15 @@ export class RequestHelper {
         return data;
     }
 
-    public async getRoverPhotos(): Promise<RoverPhotos> {
-        const roverPhotoResponse = await axios.get('https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=0&camera=FHAZ&api_key=' + this.apiKey);
-        console.log(roverPhotoResponse.data)
-        let data = roverPhotoResponse.data;
-
-        return data;
+    public async getRoverPhotos(roverName: string, cameraType: cameraTypes): Promise<RoverPhotos> {
+        try {
+            const roverPhotoResponse = await axios.get(`https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=0&camera=${cameraType}&api_key=${this.apiKey}`)
+            const data = roverPhotoResponse.data;
+            return data;
+        } catch (error) {
+            console.log(error);
+            throw new Error();
+        }
     }
 
 }
@@ -67,14 +72,24 @@ export class RequestHelper {
 //         .then((aaaaaa) => {
 //             callback(aaaaaa)
 //         })
+//         .catch(e => {
+//
+//         })
 // }
-//
-// aaaa((data) => {console.log(data)})
-//
+// //
+// // aaaa((data) => {console.log(data)})
+// //
 // async function bbbbbb(): Promise<void> {
-//     const aaaaa = await someFunc()
+//     try {
+//         const aaaaa = await someFunc()
+//         ///
+//     } catch (e) {
+//         //
+//     }
+//
 //     return aaaaa
 // }
-
-
+//
+// enum RoverError
+//
 
