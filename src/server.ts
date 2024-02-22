@@ -15,17 +15,27 @@ router.get('/rovers', async (req:any, res:any) => {
     res.send(roversList);
 });
 
-router.get('/rovers/photos', async (req:any, res:any) => {
-    const roverPhotoList = await requestHelper.getRoverPhotos();
-    let roverPhotoImages: string [] = [];
-    roverPhotoList.photos.map((photo) => {
-        roverPhotoImages.push(photo.img_src);
-    })
-    console.log(roverPhotoImages);
-    roverPhotoImages.forEach((photo) => {
+router.get('/rovers/:roverName/photos/:cameraType', async (req:any, res:any) => {
 
-    })
-    res.send(roverPhotoImages);
+    let roverPhotoList;
+    try {
+        roverPhotoList = await requestHelper.getRoverPhotos(req.params.roverName, req.params.cameraType);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    } finally {
+        if (roverPhotoList != null) {
+            let roverPhotoImages: string [] = [];
+            roverPhotoList.photos.map((photo) => {
+                roverPhotoImages.push(photo.img_src);
+            })
+            console.log(roverPhotoImages);
+            roverPhotoImages.forEach((photo) => {
+
+            })
+            res.send(roverPhotoImages);
+        }
+    }
 })
 app.use('/', router);
 
